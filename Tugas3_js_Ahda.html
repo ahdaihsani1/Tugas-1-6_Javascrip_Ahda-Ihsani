@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tugas3 Javascrip</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: plum;
+            font-size: 20px;
+        }
+        button {
+            font-size: 16px; 
+        }
+        input {
+            font-size: 16px; 
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Daftar Produk Toko</h2>
+
+    <!-- Input produk -->
+    <input type="text" id="namaProduk" placeholder="Nama Produk">
+    <input type="number" id="hargaProduk" placeholder="Harga">
+    <input type="number" id="stokProduk" placeholder="Stok">
+    <button onclick="tambahProduk()">Tambah Produk</button>
+
+    <!-- Tabel produk -->
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nama</th>
+                <th>Harga</th>
+                <th>Stok</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody id="tabelProduk"></tbody>
+    </table>
+
+    <script>
+        let produkToko =
+        [
+            { id: 1, nama: "Laptop", harga: 7000000, stok: 5 },
+            { id: 2, nama: "Mouse", harga: 200000, stok: 10 },
+            { id: 3, nama: "Keyboard", harga: 350000, stok: 7 },
+        ];
+
+        // Untuk menampilkan produk dalam tabel //
+        function tampilkanProduk() {
+            let tabel = document.getElementById("tabelProduk");
+            tabel.innerHTML = "";
+
+            produkToko.forEach((produk, index) => {
+                let row = tabel.insertRow();
+                row.insertCell(0).textContent = produk.id;
+                row.insertCell(1).textContent = produk.nama;
+                row.insertCell(2).textContent = `Rp${produk.harga.toLocaleString("id-ID")}`;
+                row.insertCell(3).textContent = produk.stok;
+
+                let aksiCell = row.insertCell(4);
+                let btnHapus = document.createElement("button");
+                btnHapus.textContent = "Hapus";
+                btnHapus.onclick = () => hapusProduk(produk.id);
+                aksiCell.appendChild(btnHapus);
+            });
+            console.log("Daftar Produk Toko", produkToko);
+        }
+
+        // Untuk menambahkan produk baru //
+        function tambahProduk() {
+            let nama= document.getElementById("namaProduk").value;
+            let harga = parseInt(document.getElementById("hargaProduk").value);
+            let stok = parseInt(document.getElementById("stokProduk").value);
+
+            if (!nama || !harga || !stok) {
+                alert("Harap isi semua data!");
+                return;
+            }
+
+            let idBaru = produkToko.length > 0 ? produkToko[produkToko.length - 1].id + 1 : 1;
+            produkToko.push({ id: idBaru, nama, harga, stok });
+
+            document.getElementById("namaProduk").value = "";
+            document.getElementById("hargaProduk").value = "";
+            document.getElementById("stokProduk").value = "";
+            tampilkanProduk();
+        }
+
+        // Untuk menghapus produk //
+        function hapusProduk(id) {
+            produkToko = produkToko.filter(produk => produk.id !== id);
+            tampilkanProduk();
+        }
+        // Menampilkan produk halaman pertama kali dimuat //
+        tampilkanProduk();
+    </script>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tugas2 Javascrip</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: beige;
+        }
+        .container {
+            background: blanchedalmond;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 400px;
+        }
+        .form-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        label {
+            flex: 1;
+            text-align: left;
+            font-weight: bold;
+        }
+        input, select {
+            flex: 2;
+            padding: 8px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px;
+            width: 100%;
+            background-color: rgb(236, 139, 236);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 15px;
+        }
+        button:hover {
+            background-color: gainsboro;
+        }
+        .table-container {
+            width: 80%;
+            margin-top: 20px;
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: blanchedalmond;
+            margin: auto;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: rgb(236, 139, 236);
+            color: white;
+        }
+        tfoot td {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Data Pegawai</h2>
+        <div class="form-group">
+            <label for="nama">Nama Pegawai:</label>
+            <input type="text" id="nama" value="Dodi Prayodi">
+        </div>
+        <div class="form-group">
+            <label for="umur">Umur:</label>
+            <input type="number" id="umur" value="25">
+        </div>
+        <div class="form-group">
+            <label for="jabatan">Jabatan:</label>
+            <select id="jabatan">
+                <option value="Manajer" selected>Manajer</option>
+                <option value="Asisten Manajer">Asisten Manajer</option>
+                <option value="Staff">Staff</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="status">Status:</label>
+            <select id="status">
+                <option value="Menikah" selected>Menikah</option>
+                <option value="Belum Menikah">Belum Menikah</option>
+            </select>
+        </div>
+        <button onclick="cetakDataPegawai()">Submit</button>
+    </div>
+
+    <div class="table-container">
+        <table id="tabelPegawai">
+            <thead>
+                <tr>
+                    <th>Nama</th>
+                    <th>Umur</th>
+                    <th>Jabatan</th>
+                    <th>Status</th>
+                    <th>Gaji Pokok</th>
+                    <th>Tunjangan Jabatan</th>
+                    <th>BPJS</th>
+                    <th>Tunjangan Keluarga</th>
+                    <th>Total Gaji</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="8"><b>Total Gaji Keseluruhan</b></td>
+                    <td id="totalKeseluruhan">0</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <script>
+        function cetakDataPegawai() {
+            let nama = document.getElementById("nama").value;
+            let umur = document.getElementById("umur").value;
+            let jabatan = document.getElementById("jabatan").value;
+            let status = document.getElementById("status").value;
+            let gajiPokok = jabatan === "Manajer" ? 15000000 :
+                            jabatan === "Asisten Manajer" ? 10000000 :
+                            5000000;
+            let tunjanganJabatan = gajiPokok * 0.15; 
+            let bpjs = gajiPokok * 0.10; 
+            let tunjanganKeluarga = status === "Menikah" ? gajiPokok * 0.20 : 0;  
+            let totalGaji = gajiPokok + tunjanganJabatan + bpjs + tunjanganKeluarga;
+            console.log("===== Data Pegawai =====");
+            console.log("Nama          :", nama);
+            console.log("Umur          :", umur);
+            console.log("Jabatan       :", jabatan);
+            console.log("Status        :", status);
+            console.log("Gaji Pokok    : Rp", gajiPokok.toLocaleString());
+            console.log("Tunjangan Jab : Rp", tunjanganJabatan.toLocaleString());
+            console.log("BPJS          : Rp", bpjs.toLocaleString());
+            console.log("Tunjangan Keluarga :", tunjanganKeluarga > 0 ? "Rp " + tunjanganKeluarga.toLocaleString() : "-");
+            console.log("Total Gaji    : Rp", totalGaji.toLocaleString());
+            let tabel = document.getElementById("tabelPegawai").getElementsByTagName('tbody')[0];
+            let newRow = tabel.insertRow();
+
+            newRow.innerHTML = `
+                <td>${nama}</td>
+                <td>${umur}</td>
+                <td>${jabatan}</td>
+                <td>${status}</td>
+                <td>Rp ${gajiPokok.toLocaleString()}</td>
+                <td>Rp ${tunjanganJabatan.toLocaleString()}</td>
+                <td>Rp ${bpjs.toLocaleString()}</td>
+                <td>${tunjanganKeluarga > 0 ? "Rp " + tunjanganKeluarga.toLocaleString() : "-"}</td>
+                <td>Rp ${totalGaji.toLocaleString()}</td>`;
+            let totalKeseluruhan = document.getElementById("totalKeseluruhan");
+            totalKeseluruhan.innerText = "Rp " + totalGaji.toLocaleString();
+        }
+    </script>
+
+</body>
+</html>

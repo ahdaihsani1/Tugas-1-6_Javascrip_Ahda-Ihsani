@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tugas4 Javascrip</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background:blanchedalmond;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2, h3 {
+            text-align: center;
+        }
+        input, button {
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: blue;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: rgb(128, 128, 234);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: rgb(4, 213, 241);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Sistem Manajemen Transportasi</h2>
+        <input type="text" id="nama" placeholder="Nama Pelanggan">
+        <input type="text" id="nomorTelepon" placeholder="Nomor Telepon">
+        <input type="text" id="kendaraanDisewa" placeholder="Kendaraan Disewa">
+        <button onclick="sewaKendaraan()">Submit</button>
+        <h3>Daftar Pelanggan:</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nama</th>
+                    <th>Telepon</th>
+                    <th>Kendaraan</th>
+                </tr>
+            </thead>
+            <tbody id="daftarPelanggan"></tbody>
+        </table>
+    </div>
+
+    <script>
+        class Pelanggan {
+            constructor(nama, nomorTelepon, kendaraanDisewa) {
+                this.nama = nama;
+                this.nomorTelepon = nomorTelepon;
+                this.kendaraanDisewa = kendaraanDisewa;
+            }
+        }
+        class ManajemenTransportasi {
+            constructor() {
+                this.pelangganList = [];
+            }
+
+            sewaKendaraan(nama, nomorTelepon, kendaraanDisewa) {
+                const pelangganBaru = new Pelanggan(nama, nomorTelepon, kendaraanDisewa);
+                this.pelangganList.push(pelangganBaru);
+                this.tampilkanPelanggan();
+            }
+
+            tampilkanPelanggan() {
+                const daftarPelanggan = document.getElementById("daftarPelanggan");
+                daftarPelanggan.innerHTML = "";
+                this.pelangganList.forEach((pelanggan) => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `<td>${pelanggan.nama}</td><td>${pelanggan.nomorTelepon}</td><td>${pelanggan.kendaraanDisewa}</td>`;
+                    daftarPelanggan.appendChild(row);
+                });
+            }
+        }
+        const sistemTransportasi = new ManajemenTransportasi();
+
+        function sewaKendaraan() {
+            const nama = document.getElementById("nama").value;
+            const nomorTelepon = document.getElementById("nomorTelepon").value;
+            const kendaraanDisewa = document.getElementById("kendaraanDisewa").value;
+
+            if (nama && nomorTelepon && kendaraanDisewa) {
+                sistemTransportasi.sewaKendaraan(nama, nomorTelepon, kendaraanDisewa);
+                document.getElementById("nama").value = "";
+                document.getElementById("nomorTelepon").value = "";
+                document.getElementById("kendaraanDisewa").value = "";
+            } 
+            else {
+                alert("Harap isi semua data!");
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manajemen Data Pengguna</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: plum;
+            color: white;
+        }
+        .hapus-btn {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .hapus-btn:hover {
+            background-color: darkred;
+        }
+        .form-container {
+            margin-bottom: 20px;
+        }
+        input {
+            margin: 5px;
+            padding: 8px;
+            width: 200px;
+        }
+        .tambah-btn {
+            background-color: blue;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Manajemen Data Pengguna</h2>
+        <div class="form-container">
+            <input type="text" id="nama" placeholder="Nama">
+            <input type="number" id="usia" placeholder="Usia">
+            <input type="text" id="alamat" placeholder="Alamat">
+            <input type="email" id="email" placeholder="Email">
+            <button class="tambah-btn" onclick="tambahUser()">Tambah Data</button>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nama</th>
+                    <th>Usia</th>
+                    <th>Alamat</th>
+                    <th>Email</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody id="userTable">
+                <!-- Data akan dimasukkan secara dinamis -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        let users = [
+            { nama: "Arya", usia: 20, alamat: "Bandung", email: "arya@gmail.com" },
+            { nama: "Budi", usia: 25, alamat: "Surabaya", email: "budi@gmail.com" },
+            { nama: "Citra", usia: 30, alamat: "Yogyakarta", email: "citra@gmail.com" },
+            { nama: "Dewi", usia: 27, alamat: "Semarang", email: "dewi@gmail.com" },
+            { nama: "Eko", usia: 22, alamat: "Jakarta", email: "eko@gmail.com" },
+            { nama: "Fajar", usia: 28, alamat: "Medan", email: "fajar@gmail.com" },
+            { nama: "Gina", usia: 24, alamat: "Malang", email: "gina@gmail.com" },
+            { nama: "Hadi", usia: 26, alamat: "Bali", email: "hadi@gmail.com" },
+            { nama: "Intan", usia: 23, alamat: "Makassar", email: "intan@gmail.com" },
+            { nama: "Joko", usia: 29, alamat: "Palembang", email: "joko@gmail.com" }
+        ];
+
+        function loadUsers() {
+            const tableBody = document.getElementById("userTable");
+            tableBody.innerHTML = "";
+            users.forEach((user, index) => {
+                let row = `<tr>
+                    <td>${index + 1}</td>
+                    <td>${user.nama}</td>
+                    <td>${user.usia}</td>
+                    <td>${user.alamat}</td>
+                    <td>${user.email}</td>
+                    <td><button class="hapus-btn" onclick="hapusUser(${index})">Hapus</button></td>
+                </tr>`;
+                tableBody.innerHTML += row;
+            });
+        }
+
+        function hapusUser(index) {
+            users.splice(index, 1);
+            loadUsers();
+        }
+
+        function tambahUser() {
+            let nama = document.getElementById("nama").value;
+            let usia = document.getElementById("usia").value;
+            let alamat = document.getElementById("alamat").value;
+            let email = document.getElementById("email").value;
+            
+            if (nama && usia && alamat && email) {
+                users.push({ nama, usia: parseInt(usia), alamat, email });
+                loadUsers();
+                document.getElementById("nama").value = "";
+                document.getElementById("usia").value = "";
+                document.getElementById("alamat").value = "";
+                document.getElementById("email").value = "";
+            } else {
+                alert("Harap isi semua data");
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", loadUsers);
+    </script>
+</body>
+</html>
